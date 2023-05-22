@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+--hidden-import="sklearn.utils._bunch"
 
 
 def get_key(val, my_dict):
