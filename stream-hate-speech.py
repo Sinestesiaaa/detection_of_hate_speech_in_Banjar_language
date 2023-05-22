@@ -3,8 +3,7 @@ import streamlit as st
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import LabelEncoder
-import sklearn.utils._bunch
-
+from sklearn.utils import _bunch
 
 def get_key(val, my_dict):
     for key, value in my_dict.items():
