@@ -3,8 +3,7 @@ import streamlit as st
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split
---hidden-import="sklearn.utils._bunch"
+import sklearn.utils._bunch
 
 
 def get_key(val, my_dict):
@@ -12,11 +11,12 @@ def get_key(val, my_dict):
         if val == value:
             return key
 
-#membaca model
-hate_speech_detection =pickle.load(open('ensemble-method.pkl', 'rb'))
-cv =pickle.load(open('feature-extraction.pkl', 'rb'))
 
-#judul web
+# membaca model
+hate_speech_detection = pickle.load(open('ensemble-method.pkl', 'rb'))
+cv = pickle.load(open('feature-extraction.pkl', 'rb'))
+
+# judul web
 st.title("Deteksi Ujaran Kebencian bahasa Banjar")
 
 text = st.text_area("Masukan Kalimat bahasa Banjar", "Masukan Kalimat Disini")
@@ -36,4 +36,3 @@ if st.button("Klasifikasikan"):
             st.error("Kalimat Termasuk: {}".format(final_result))
     else:
         st.warning("Masukkan teks sebelum melakukan klasifikasi.")
-
