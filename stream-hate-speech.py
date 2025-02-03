@@ -1,37 +1,38 @@
-import pickle
+import joblib
 import streamlit as st
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.preprocessing import LabelEncoder
-
 
 def get_key(val, my_dict):
     for key, value in my_dict.items():
         if val == value:
             return key
 
+# Membaca model dengan joblib
+hate_speech_detection = joblib.load('ensemble-method.pkl')
+cv = joblib.load('feature-extraction.pkl')
 
-# membaca model
-hate_speech_detection = pickle.load(open('ensemble-method.pkl', 'rb'))
-cv = pickle.load(open('feature-extraction.pkl', 'rb'))
+# Judul web
+st.title("Deteksi Ujaran Kebencian Bahasa Banjar")
 
-# judul web
-st.title("Deteksi Ujaran Kebencian bahasa Banjar")
+# Input teks dari pengguna
+text = st.text_area("Masukkan Kalimat dalam Bahasa Banjar", "Masukkan Kalimat di sini")
 
-text = st.text_area("Masukan Kalimat bahasa Banjar", "Masukan Kalimat Disini")
-
+# Label klasifikasi
 prediction_labels = {'Ujaran Kebencian': 1, 'Bukan Ujaran Kebencian': 0}
+
 if st.button("Klasifikasikan"):
     if text.strip():  # Memeriksa apakah teks tidak kosong setelah tombol diklik
         vect_text = cv.transform([text])
 
-        prediction = hate_speech_detection.predict(vect_text)
+        # Melakukan prediksi
+        prediction = hate_speech_detection.predict(vect_text)[0]  # Ambil nilai prediksi pertama
 
         final_result = get_key(prediction, prediction_labels)
 
         if final_result == 'Bukan Ujaran Kebencian':
-            st.success("Kalimat Termasuk: {}".format(final_result))
+            st.success(f"Kalimat Termasuk: {final_result}")
         elif final_result == 'Ujaran Kebencian':
-            st.error("Kalimat Termasuk: {}".format(final_result))
+            st.error(f"Kalimat Termasuk: {final_result}")
     else:
         st.warning("Masukkan teks sebelum melakukan klasifikasi.")
